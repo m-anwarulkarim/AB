@@ -1,0 +1,49 @@
+services:
+  # ডাটাবেস সার্ভিস
+  db:
+    image: postgres:15-alpine
+    container_name: ab-database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 55622  # আপনার ইচ্ছামতো পাসওয়ার্ড দিন
+      POSTGRES_DB: AB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # আপনার Bun অ্যাপ সার্ভিস
+
+  studio:
+    image: oven/bun:latest # সরাসরি ইমেজ ব্যবহার করলে বিল্ড টাইম বাঁচবে
+    container_name: ab-prisma-studio
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app # আপনার বর্তমান ফোল্ডারটি কন্টেইনারে মাউন্ট করা
+    command: bunx prisma studio --port 5555 --browser none
+    ports:
+      - "51212:5555"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:55622@db:5432/AB?schema=public
+
+
+  app:
+    build: .
+    container_name: ab-app-container
+    ports:
+      - "5000:5000"
+    environment:
+      # লক্ষ্য করুন: localhost এর বদলে 'db' সার্ভিস নাম ব্যবহার করা হয়েছে
+      DATABASE_URL: postgresql://postgres:55622@db:5432/AB?schema=public
+      PORT: 5000
+      BETTER_AUTH_SECRET: bui5hz2oSt4oTbqF6m3oEdI2AJridOPI
+      BETTER_AUTH_URL: http://localhost:5000
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
