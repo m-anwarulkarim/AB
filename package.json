@@ -1,39 +1,51 @@
 {
   "name": "ab",
   "version": "1.0.0",
-  "description": "A modern Node.js backend with Better Auth and Prisma",
-  "main": "dist/index.js",
-  "type": "module",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-anwarulkarim/AB.git"
   },
   "keywords": [],
-  "author": "anwarul karim",
+  "author": "",
   "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/m-anwarulkarim/AB/issues"
+  },
+  "homepage": "https://github.com/m-anwarulkarim/AB#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^25.3.0",
     "@types/pg": "^8.16.0",
-    "prisma": "^7.4.0",
+    "prisma": "^7.4.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.4.0",
-    "@prisma/client": "^7.4.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
+    "@prisma/adapter-pg": "^7.4.1",
+    "@prisma/client": "^7.4.1",
     "better-auth": "^1.4.18",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
-    "pg": "^8.18.0"
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "pg": "^8.18.0",
+    "winston": "^3.19.0"
   }
 }
