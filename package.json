@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "start": "node index.js",
+    "start": "node index.ts",
     "build": "bunx prisma generate --schema prisma/schema.prisma && tsc",
     "clean": "rimraf dist",
     "lint": "eslint .",
