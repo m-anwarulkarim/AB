@@ -440,6 +440,10 @@ export type UserScalarRelationFilter = {
     is?: Prisma.UserWhereInput;
     isNot?: Prisma.UserWhereInput;
 };
+export type UserNullableScalarRelationFilter = {
+    is?: Prisma.UserWhereInput | null;
+    isNot?: Prisma.UserWhereInput | null;
+};
 export type StringFieldUpdateOperationsInput = {
     set?: string;
 };
@@ -487,10 +491,12 @@ export type UserCreateNestedOneWithoutAddressesInput = {
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutAddressesInput;
     connect?: Prisma.UserWhereUniqueInput;
 };
-export type UserUpdateOneRequiredWithoutAddressesNestedInput = {
+export type UserUpdateOneWithoutAddressesNestedInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutAddressesInput, Prisma.UserUncheckedCreateWithoutAddressesInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutAddressesInput;
     upsert?: Prisma.UserUpsertWithoutAddressesInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAddressesInput, Prisma.UserUpdateWithoutAddressesInput>, Prisma.UserUncheckedUpdateWithoutAddressesInput>;
 };
@@ -499,10 +505,12 @@ export type UserCreateNestedOneWithoutCartInput = {
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutCartInput;
     connect?: Prisma.UserWhereUniqueInput;
 };
-export type UserUpdateOneRequiredWithoutCartNestedInput = {
+export type UserUpdateOneWithoutCartNestedInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutCartInput, Prisma.UserUncheckedCreateWithoutCartInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutCartInput;
     upsert?: Prisma.UserUpsertWithoutCartInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCartInput, Prisma.UserUpdateWithoutCartInput>, Prisma.UserUncheckedUpdateWithoutCartInput>;
 };
@@ -511,10 +519,12 @@ export type UserCreateNestedOneWithoutOrdersInput = {
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput;
     connect?: Prisma.UserWhereUniqueInput;
 };
-export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+export type UserUpdateOneWithoutOrdersNestedInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput;
     upsert?: Prisma.UserUpsertWithoutOrdersInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>;
 };

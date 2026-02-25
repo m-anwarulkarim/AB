@@ -7,7 +7,8 @@ export declare const AddressService: {
         phone: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
+        guestId: string | null;
         label: string | null;
         fullName: string;
         district: string | null;

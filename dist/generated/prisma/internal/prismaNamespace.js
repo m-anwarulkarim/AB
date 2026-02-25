@@ -157,6 +157,7 @@ export const ComboItemScalarFieldEnum = {
 export const AddressScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
+    guestId: 'guestId',
     label: 'label',
     fullName: 'fullName',
     phone: 'phone',
@@ -171,6 +172,7 @@ export const AddressScalarFieldEnum = {
 export const CartScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
+    guestId: 'guestId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -187,6 +189,7 @@ export const OrderScalarFieldEnum = {
     id: 'id',
     orderNo: 'orderNo',
     userId: 'userId',
+    guestId: 'guestId',
     addressId: 'addressId',
     status: 'status',
     paymentMethod: 'paymentMethod',

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "start": "node dist/src/server.js",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/src/index.js",
     "build": "bunx prisma generate --schema prisma/schema.prisma && tsc",
     "clean": "rimraf dist",
     "lint": "eslint .",

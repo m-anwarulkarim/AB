@@ -5,12 +5,12 @@ import authGuard from "../../lib/auth.guard.js";
 const router = Router();
 
 // all cart routes require login
-router.get("/cart", authGuard(), CartController.getMyCart);
+router.get("/cart", CartController.getMyCart);
 
-router.post("/cart/items", authGuard(), CartController.addItem);
-router.patch("/cart/items/:comboId", authGuard(), CartController.updateQty);
+router.post("/cart/items", CartController.addItem);
+router.patch("/cart/items/:comboId", CartController.updateQty);
 
-router.delete("/cart/items/:comboId", authGuard(), CartController.removeItem);
-router.delete("/cart/clear", authGuard(), CartController.clear);
+router.delete("/cart/items/:comboId", CartController.removeItem);
+router.delete("/cart/clear", CartController.clear);
 
 export default router;

@@ -121,6 +121,7 @@ export type ComboItemScalarFieldEnum = (typeof ComboItemScalarFieldEnum)[keyof t
 export declare const AddressScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
+    readonly guestId: "guestId";
     readonly label: "label";
     readonly fullName: "fullName";
     readonly phone: "phone";
@@ -136,6 +137,7 @@ export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeo
 export declare const CartScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
+    readonly guestId: "guestId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -154,6 +156,7 @@ export declare const OrderScalarFieldEnum: {
     readonly id: "id";
     readonly orderNo: "orderNo";
     readonly userId: "userId";
+    readonly guestId: "guestId";
     readonly addressId: "addressId";
     readonly status: "status";
     readonly paymentMethod: "paymentMethod";

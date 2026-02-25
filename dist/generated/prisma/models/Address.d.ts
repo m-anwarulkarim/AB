@@ -13,6 +13,7 @@ export type AggregateAddress = {
 export type AddressMinAggregateOutputType = {
     id: string | null;
     userId: string | null;
+    guestId: string | null;
     label: string | null;
     fullName: string | null;
     phone: string | null;
@@ -27,6 +28,7 @@ export type AddressMinAggregateOutputType = {
 export type AddressMaxAggregateOutputType = {
     id: string | null;
     userId: string | null;
+    guestId: string | null;
     label: string | null;
     fullName: string | null;
     phone: string | null;
@@ -41,6 +43,7 @@ export type AddressMaxAggregateOutputType = {
 export type AddressCountAggregateOutputType = {
     id: number;
     userId: number;
+    guestId: number;
     label: number;
     fullName: number;
     phone: number;
@@ -56,6 +59,7 @@ export type AddressCountAggregateOutputType = {
 export type AddressMinAggregateInputType = {
     id?: true;
     userId?: true;
+    guestId?: true;
     label?: true;
     fullName?: true;
     phone?: true;
@@ -70,6 +74,7 @@ export type AddressMinAggregateInputType = {
 export type AddressMaxAggregateInputType = {
     id?: true;
     userId?: true;
+    guestId?: true;
     label?: true;
     fullName?: true;
     phone?: true;
@@ -84,6 +89,7 @@ export type AddressMaxAggregateInputType = {
 export type AddressCountAggregateInputType = {
     id?: true;
     userId?: true;
+    guestId?: true;
     label?: true;
     fullName?: true;
     phone?: true;
@@ -160,7 +166,8 @@ export type AddressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 };
 export type AddressGroupByOutputType = {
     id: string;
-    userId: string;
+    userId: string | null;
+    guestId: string | null;
     label: string | null;
     fullName: string;
     phone: string;
@@ -183,7 +190,8 @@ export type AddressWhereInput = {
     OR?: Prisma.AddressWhereInput[];
     NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[];
     id?: Prisma.StringFilter<"Address"> | string;
-    userId?: Prisma.StringFilter<"Address"> | string;
+    userId?: Prisma.StringNullableFilter<"Address"> | string | null;
+    guestId?: Prisma.StringNullableFilter<"Address"> | string | null;
     label?: Prisma.StringNullableFilter<"Address"> | string | null;
     fullName?: Prisma.StringFilter<"Address"> | string;
     phone?: Prisma.StringFilter<"Address"> | string;
@@ -194,12 +202,13 @@ export type AddressWhereInput = {
     isDefault?: Prisma.BoolFilter<"Address"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
     orders?: Prisma.OrderListRelationFilter;
 };
 export type AddressOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
-    userId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    guestId?: Prisma.SortOrderInput | Prisma.SortOrder;
     label?: Prisma.SortOrderInput | Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     phone?: Prisma.SortOrder;
@@ -218,7 +227,8 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[];
     OR?: Prisma.AddressWhereInput[];
     NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[];
-    userId?: Prisma.StringFilter<"Address"> | string;
+    userId?: Prisma.StringNullableFilter<"Address"> | string | null;
+    guestId?: Prisma.StringNullableFilter<"Address"> | string | null;
     label?: Prisma.StringNullableFilter<"Address"> | string | null;
     fullName?: Prisma.StringFilter<"Address"> | string;
     phone?: Prisma.StringFilter<"Address"> | string;
@@ -229,12 +239,13 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
     isDefault?: Prisma.BoolFilter<"Address"> | boolean;
     createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string;
-    user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
     orders?: Prisma.OrderListRelationFilter;
 }, "id">;
 export type AddressOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
-    userId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    guestId?: Prisma.SortOrderInput | Prisma.SortOrder;
     label?: Prisma.SortOrderInput | Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     phone?: Prisma.SortOrder;
@@ -254,7 +265,8 @@ export type AddressScalarWhereWithAggregatesInput = {
     OR?: Prisma.AddressScalarWhereWithAggregatesInput[];
     NOT?: Prisma.AddressScalarWhereWithAggregatesInput | Prisma.AddressScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Address"> | string;
-    userId?: Prisma.StringWithAggregatesFilter<"Address"> | string;
+    userId?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null;
+    guestId?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null;
     label?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null;
     fullName?: Prisma.StringWithAggregatesFilter<"Address"> | string;
     phone?: Prisma.StringWithAggregatesFilter<"Address"> | string;
@@ -268,6 +280,7 @@ export type AddressScalarWhereWithAggregatesInput = {
 };
 export type AddressCreateInput = {
     id?: string;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -278,12 +291,13 @@ export type AddressCreateInput = {
     isDefault?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutAddressesInput;
+    user?: Prisma.UserCreateNestedOneWithoutAddressesInput;
     orders?: Prisma.OrderCreateNestedManyWithoutAddressInput;
 };
 export type AddressUncheckedCreateInput = {
     id?: string;
-    userId: string;
+    userId?: string | null;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -298,6 +312,7 @@ export type AddressUncheckedCreateInput = {
 };
 export type AddressUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -308,12 +323,13 @@ export type AddressUpdateInput = {
     isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutAddressesNestedInput;
+    user?: Prisma.UserUpdateOneWithoutAddressesNestedInput;
     orders?: Prisma.OrderUpdateManyWithoutAddressNestedInput;
 };
 export type AddressUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -328,7 +344,8 @@ export type AddressUncheckedUpdateInput = {
 };
 export type AddressCreateManyInput = {
     id?: string;
-    userId: string;
+    userId?: string | null;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -342,6 +359,7 @@ export type AddressCreateManyInput = {
 };
 export type AddressUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -355,7 +373,8 @@ export type AddressUpdateManyMutationInput = {
 };
 export type AddressUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -378,6 +397,7 @@ export type AddressOrderByRelationAggregateInput = {
 export type AddressCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    guestId?: Prisma.SortOrder;
     label?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     phone?: Prisma.SortOrder;
@@ -392,6 +412,7 @@ export type AddressCountOrderByAggregateInput = {
 export type AddressMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    guestId?: Prisma.SortOrder;
     label?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     phone?: Prisma.SortOrder;
@@ -406,6 +427,7 @@ export type AddressMaxOrderByAggregateInput = {
 export type AddressMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    guestId?: Prisma.SortOrder;
     label?: Prisma.SortOrder;
     fullName?: Prisma.SortOrder;
     phone?: Prisma.SortOrder;
@@ -475,6 +497,7 @@ export type AddressUpdateOneWithoutOrdersNestedInput = {
 };
 export type AddressCreateWithoutUserInput = {
     id?: string;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -489,6 +512,7 @@ export type AddressCreateWithoutUserInput = {
 };
 export type AddressUncheckedCreateWithoutUserInput = {
     id?: string;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -527,7 +551,8 @@ export type AddressScalarWhereInput = {
     OR?: Prisma.AddressScalarWhereInput[];
     NOT?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[];
     id?: Prisma.StringFilter<"Address"> | string;
-    userId?: Prisma.StringFilter<"Address"> | string;
+    userId?: Prisma.StringNullableFilter<"Address"> | string | null;
+    guestId?: Prisma.StringNullableFilter<"Address"> | string | null;
     label?: Prisma.StringNullableFilter<"Address"> | string | null;
     fullName?: Prisma.StringFilter<"Address"> | string;
     phone?: Prisma.StringFilter<"Address"> | string;
@@ -541,6 +566,7 @@ export type AddressScalarWhereInput = {
 };
 export type AddressCreateWithoutOrdersInput = {
     id?: string;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -551,11 +577,12 @@ export type AddressCreateWithoutOrdersInput = {
     isDefault?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    user: Prisma.UserCreateNestedOneWithoutAddressesInput;
+    user?: Prisma.UserCreateNestedOneWithoutAddressesInput;
 };
 export type AddressUncheckedCreateWithoutOrdersInput = {
     id?: string;
-    userId: string;
+    userId?: string | null;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -582,6 +609,7 @@ export type AddressUpdateToOneWithWhereWithoutOrdersInput = {
 };
 export type AddressUpdateWithoutOrdersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -592,11 +620,12 @@ export type AddressUpdateWithoutOrdersInput = {
     isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    user?: Prisma.UserUpdateOneRequiredWithoutAddressesNestedInput;
+    user?: Prisma.UserUpdateOneWithoutAddressesNestedInput;
 };
 export type AddressUncheckedUpdateWithoutOrdersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -610,6 +639,7 @@ export type AddressUncheckedUpdateWithoutOrdersInput = {
 };
 export type AddressCreateManyUserInput = {
     id?: string;
+    guestId?: string | null;
     label?: string | null;
     fullName: string;
     phone: string;
@@ -623,6 +653,7 @@ export type AddressCreateManyUserInput = {
 };
 export type AddressUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -637,6 +668,7 @@ export type AddressUpdateWithoutUserInput = {
 };
 export type AddressUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -651,6 +683,7 @@ export type AddressUncheckedUpdateWithoutUserInput = {
 };
 export type AddressUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    guestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     fullName?: Prisma.StringFieldUpdateOperationsInput | string;
     phone?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -689,6 +722,7 @@ export type AddressCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    guestId?: boolean;
     label?: boolean;
     fullName?: boolean;
     phone?: boolean;
@@ -699,13 +733,14 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isDefault?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
     orders?: boolean | Prisma.Address$ordersArgs<ExtArgs>;
     _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    guestId?: boolean;
     label?: boolean;
     fullName?: boolean;
     phone?: boolean;
@@ -716,11 +751,12 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     isDefault?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     userId?: boolean;
+    guestId?: boolean;
     label?: boolean;
     fullName?: boolean;
     phone?: boolean;
@@ -731,11 +767,12 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     isDefault?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
 }, ExtArgs["result"]["address"]>;
 export type AddressSelectScalar = {
     id?: boolean;
     userId?: boolean;
+    guestId?: boolean;
     label?: boolean;
     fullName?: boolean;
     phone?: boolean;
@@ -747,27 +784,28 @@ export type AddressSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "label" | "fullName" | "phone" | "district" | "upazila" | "area" | "addressLine" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["address"]>;
+export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "guestId" | "label" | "fullName" | "phone" | "district" | "upazila" | "area" | "addressLine" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["address"]>;
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
     orders?: boolean | Prisma.Address$ordersArgs<ExtArgs>;
     _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type AddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
 };
 export type AddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    user?: boolean | Prisma.Address$userArgs<ExtArgs>;
 };
 export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Address";
     objects: {
-        user: Prisma.$UserPayload<ExtArgs>;
+        user: Prisma.$UserPayload<ExtArgs> | null;
         orders: Prisma.$OrderPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
-        userId: string;
+        userId: string | null;
+        guestId: string | null;
         label: string | null;
         fullName: string;
         phone: string;
@@ -1107,7 +1145,7 @@ export interface AddressDelegate<ExtArgs extends runtime.Types.Extensions.Intern
  */
 export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.Address$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     orders<T extends Prisma.Address$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1136,6 +1174,7 @@ export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.
 export interface AddressFieldRefs {
     readonly id: Prisma.FieldRef<"Address", 'String'>;
     readonly userId: Prisma.FieldRef<"Address", 'String'>;
+    readonly guestId: Prisma.FieldRef<"Address", 'String'>;
     readonly label: Prisma.FieldRef<"Address", 'String'>;
     readonly fullName: Prisma.FieldRef<"Address", 'String'>;
     readonly phone: Prisma.FieldRef<"Address", 'String'>;
@@ -1523,6 +1562,24 @@ export type AddressDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
      * Limit how many Addresses to delete.
      */
     limit?: number;
+};
+/**
+ * Address.user
+ */
+export type Address$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: Prisma.UserSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: Prisma.UserOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserInclude<ExtArgs> | null;
+    where?: Prisma.UserWhereInput;
 };
 /**
  * Address.orders

@@ -28,7 +28,8 @@ export declare const CartService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
+        guestId: string | null;
     }) | {
         id: null;
         userId: string;

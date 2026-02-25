@@ -23,7 +23,7 @@ router.post(
 
 // JWT system এ sign-out শুধু client-side token delete.
 // তবুও endpoint রাখতে চাইলে protected রেখেছি
-router.post("/sign-out", authGuard(), authController.signOut);
+router.post("/sign-out", authController.signOut);
 
 // refresh endpoint
 router.post("/refresh", validateRequest(refreshSchema), authController.refresh);

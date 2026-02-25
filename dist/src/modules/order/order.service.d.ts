@@ -18,8 +18,9 @@ export declare const OrderService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
         note: string | null;
+        guestId: string | null;
         addressId: string | null;
         customerName: string;
         customerPhone: string;
@@ -47,7 +48,8 @@ export declare const OrderService: {
             phone: string;
             createdAt: Date;
             updatedAt: Date;
-            userId: string;
+            userId: string | null;
+            guestId: string | null;
             label: string | null;
             fullName: string;
             district: string | null;
@@ -60,8 +62,9 @@ export declare const OrderService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
         note: string | null;
+        guestId: string | null;
         addressId: string | null;
         customerName: string;
         customerPhone: string;
@@ -88,7 +91,7 @@ export declare const OrderService: {
             updatedAt: Date;
             isActive: boolean;
             isDeleted: boolean;
-        };
+        } | null;
         items: {
             id: string;
             title: string;
@@ -102,8 +105,9 @@ export declare const OrderService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
         note: string | null;
+        guestId: string | null;
         addressId: string | null;
         customerName: string;
         customerPhone: string;
@@ -130,8 +134,9 @@ export declare const OrderService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
+        userId: string | null;
         note: string | null;
+        guestId: string | null;
         addressId: string | null;
         customerName: string;
         customerPhone: string;
