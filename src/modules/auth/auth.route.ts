@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { authController } from "./auth.controller.js";
-import authGuard from "../../lib/auth.guard.js";
 import { validateRequest } from "../../middlewares/validateRequest.js";
 import {
   signInSchema,

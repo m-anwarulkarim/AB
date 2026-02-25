@@ -2,18 +2,14 @@ import AppError from "../../utils/AppError.js";
 import status from "http-status";
 import { auth } from "../../lib/auth.js";
 import { prisma } from "../../lib/prisma.js";
-import {
-  SignInEmail,
-  SignUpEmail,
-  VoidResult,
-  AuthLoginResult,
-} from "./auth.types.js";
+
 import {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
 } from "../../utils/jwt.js";
 import { USER_STATUS } from "../../../generated/prisma/enums.js";
+import type { AuthLoginResult, SignInEmail, SignUpEmail, VoidResult } from "./auth.types.js";
 const signUpEmail = async (userData: SignUpEmail) => {
   const { name, email, password } = userData;
 
