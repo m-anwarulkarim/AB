@@ -2,9 +2,9 @@
   "name": "ab",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch index.ts",
     "start": "node index.ts",
     "build": "bunx prisma generate --schema prisma/schema.prisma && tsc",
     "clean": "rimraf dist",

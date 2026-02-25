@@ -12,6 +12,14 @@
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist", "prisma"],
-  "include": ["src/**/*", "generated/**/*"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "prisma"
+  ],
+  "include": [
+    "src/**/*",
+    "generated/**/*",
+    "index.ts"
+  ]
 }
