@@ -1,19 +1,19 @@
 // src/routes/index.ts
 
 import { Router } from "express";
-import healthRoute from "../modules/health/health.route";
-import { authRoute } from "../modules/auth/auth.route";
-import adminComboRoutes from "../modules/combo/admin.combo.routes";
-import comboRoutes from "../modules/combo/combo.routes";
-import cartRoutes from "../modules/cart/cart.routes";
-import { orderRoutes } from "../modules/order/order.routes";
-import adminOrderRoutes from "../modules/order/admin.order.routes";
-import addressRoutes from "../modules/address/address.routes";
+import healthRoute from "../modules/health/health.route.js";
+import { authRoute } from "../modules/auth/auth.route.js";
+import adminComboRoutes from "../modules/combo/admin.combo.routes.js";
+import comboRoutes from "../modules/combo/combo.routes.js";
+import cartRoutes from "../modules/cart/cart.routes.js";
+import { orderRoutes } from "../modules/order/order.routes.js";
+import adminOrderRoutes from "../modules/order/admin.order.routes.js";
+import addressRoutes from "../modules/address/address.routes.js";
 
 const router = Router();
 
 router.use("/health", healthRoute);
-router.use("/auth", authRoute)
+router.use("/auth", authRoute);
 router.use("/combos", comboRoutes);
 router.use("/admin/combos", adminComboRoutes);
 router.use(cartRoutes);

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import status from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
-import { CartService } from "./cart.service";
-import { addToCartSchema, updateQtySchema } from "./cart.validation";
+import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
+import { CartService } from "./cart.service.js";
+import { addToCartSchema, updateQtySchema } from "./cart.validation.js";
 
 export const CartController = {
     // ✅ GET /cart

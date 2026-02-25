@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import status from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
-import { createAddressSchema, updateAddressSchema } from "./address.validation";
-import { AddressService } from "./address.service";
+import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
+import { createAddressSchema, updateAddressSchema } from "./address.validation.js";
+import { AddressService } from "./address.service.js";
 
 export const AddressController = {
     // ✅ GET /addresses

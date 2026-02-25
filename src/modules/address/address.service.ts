@@ -1,7 +1,7 @@
 import status from "http-status";
-import AppError from "../../utils/AppError";
-import { prisma } from "../../lib/prisma";
-import { CreateAddressInput, UpdateAddressInput } from "./address.type";
+import AppError from "../../utils/AppError.js";
+import { prisma } from "../../lib/prisma.js";
+import { CreateAddressInput, UpdateAddressInput } from "./address.type.js";
 
 function getUserId(reqUser: Express.Request["user"]): string {
     if (!reqUser?.id) throw new AppError(status.UNAUTHORIZED, "Unauthorized - Please login");
@@ -24,7 +24,7 @@ export const AddressService = {
     async createAddress(userId: string, payload: CreateAddressInput) {
         const wantsDefault = payload.isDefault ?? false;
 
-        const created = await prisma.$transaction(async (tx) => {
+        const created = await prisma.$transaction(async (tx: any) => {
             const existingCount = await tx.address.count({ where: { userId } });
 
             // ✅ first address -> auto default
@@ -69,8 +69,9 @@ export const AddressService = {
 
         const wantsDefault = payload.isDefault === true;
 
-        const updated = await prisma.$transaction(async (tx) => {
+        const updated = await prisma.$transaction(async (tx: any) => {
             if (wantsDefault) {
+
                 await tx.address.updateMany({
                     where: { userId, isDefault: true },
                     data: { isDefault: false },
@@ -106,7 +107,7 @@ export const AddressService = {
             throw new AppError(status.NOT_FOUND, "Address not found");
         }
 
-        const updated = await prisma.$transaction(async (tx) => {
+        const updated = await prisma.$transaction(async (tx: any) => {
             await tx.address.updateMany({
                 where: { userId, isDefault: true },
                 data: { isDefault: false },
@@ -132,7 +133,7 @@ export const AddressService = {
             throw new AppError(status.NOT_FOUND, "Address not found");
         }
 
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.address.delete({ where: { id: addressId } });
 
             // ✅ if deleted one was default, set another as default (if exists)

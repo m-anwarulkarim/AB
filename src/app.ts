@@ -2,9 +2,10 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { notFound } from "./middlewares/notFound";
-import globalErrorHandler from "./middlewares/globalErrorHandler";
-import router from "./routes";
+import { envVars } from "./config/env.js";
+import router from "./routes/index.js";
+import { notFound } from "./middlewares/notFound.js";
+import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 
 export const app = express();
 
@@ -12,10 +13,12 @@ export const app = express();
 app.use(helmet());
 
 // 🌍 CORS
-app.use(cors({
+app.use(
+  cors({
     credentials: true,
-    origin: ["http://localhost:3000"],
-}));
+    origin: ["http://localhost:3000", envVars.FRONTEND_URL],
+  }),
+);
 
 // 🧠 Body parser
 app.use(express.json());

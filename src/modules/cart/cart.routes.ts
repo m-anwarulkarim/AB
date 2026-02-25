@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CartController } from "./cart.controller";
-import authGuard from "../../lib/auth.guard";
+import { CartController } from "./cart.controller.js";
+import authGuard from "../../lib/auth.guard.js";
 
 const router = Router();
 

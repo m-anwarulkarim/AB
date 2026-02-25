@@ -1,8 +1,8 @@
 import status from "http-status";
-import AppError from "../../utils/AppError";
-import { prisma } from "../../lib/prisma";
-import { CheckoutInput, UpdateOrderStatusInput } from "./order.type";
-import { OrderStatus } from "../../../generated/prisma/enums";
+import AppError from "../../utils/AppError.js";
+import { prisma } from "../../lib/prisma.js";
+import { CheckoutInput, UpdateOrderStatusInput } from "./order.type.js";
+import { OrderStatus } from "../../../generated/prisma/enums.js";
 
 function getUserId(reqUser: Express.Request["user"]): string {
     if (!reqUser?.id) throw new AppError(status.UNAUTHORIZED, "Unauthorized - Please login");
@@ -61,7 +61,7 @@ export const OrderService = {
         }
 
         // ✅ total quantity from cart
-        const totalQty = cart.items.reduce((sum, it) => sum + (it.quantity ?? 1), 0);
+        const totalQty = cart.items.reduce((sum: any, it: any) => sum + (it.quantity ?? 1), 0);
         const { deliveryCharge, discount: productDiscount } = calcCartRule(totalQty);
 
         // 2) Address snapshot
@@ -116,7 +116,7 @@ export const OrderService = {
         }
 
         // 3) Build line items + validate
-        const lineItems = cart.items.map((ci) => {
+        const lineItems = cart.items.map((ci: any) => {
             const combo = ci.combo;
 
             if (!combo || combo.isActive === false) {
@@ -142,14 +142,14 @@ export const OrderService = {
             };
         });
 
-        const subtotal = lineItems.reduce((sum, li) => sum + li.lineTotal, 0);
+        const subtotal = lineItems.reduce((sum: any, li: any) => sum + li.lineTotal, 0);
 
         // ✅ Apply delivery + discount
         const grossTotal = subtotal + deliveryCharge;
         const total = Math.max(0, grossTotal - productDiscount);
 
         // 4) Transaction: create order + items, decrement stock, clear cart
-        const created = await prisma.$transaction(async (tx) => {
+        const created = await prisma.$transaction(async (tx: any) => {
             let orderNo = generateOrderNo();
             for (let i = 0; i < 3; i++) {
                 const exists = await tx.order.findUnique({ where: { orderNo }, select: { id: true } });
@@ -176,7 +176,7 @@ export const OrderService = {
 
                     ...(payload.note ? { note: payload.note } : {}),
                     items: {
-                        create: lineItems.map((li) => ({
+                        create: lineItems.map((li: any) => ({
                             comboId: li.comboId,
                             title: li.title,
                             quantity: li.quantity,
@@ -274,11 +274,11 @@ export const OrderService = {
         }
 
         // ✅ total quantity
-        const totalQty = cart.items.reduce((sum, it) => sum + (it.quantity ?? 1), 0);
+        const totalQty = cart.items.reduce((sum: any, it: any) => sum + (it.quantity ?? 1), 0);
         const { deliveryCharge, discount } = calcCartRule(totalQty);
 
         // validate + subtotal
-        const subtotal = cart.items.reduce((sum, ci) => {
+        const subtotal = cart.items.reduce((sum: any, ci: any) => {
             const combo = ci.combo;
 
             if (!combo || combo.isActive === false) {

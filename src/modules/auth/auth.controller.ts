@@ -1,57 +1,57 @@
 import { Request, Response } from "express";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
 import status from "http-status";
-import { authService } from "./auth.service";
+import { authService } from "./auth.service.js";
 
 const signUpEmail = catchAsync(async (req: Request, res: Response) => {
-    const user = await authService.signUpEmail(req.body);
+  const user = await authService.signUpEmail(req.body);
 
-    sendResponse(res, {
-        statusCode: status.CREATED,
-        success: true,
-        message: "User created successfully",
-        data: user,
-    });
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "User created successfully",
+    data: user,
+  });
 });
 
 const signInEmail = catchAsync(async (req: Request, res: Response) => {
-    const data = await authService.signInEmail(req.body, req.headers as any);
+  const data = await authService.signInEmail(req.body, req.headers as any);
 
-    sendResponse(res, {
-        statusCode: status.OK,
-        success: true,
-        message: "User login successfully",
-        data,
-    });
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User login successfully",
+    data,
+  });
 });
 
 const signOut = catchAsync(async (req: Request, res: Response) => {
-    const data = await authService.signOut(req.headers as any);
+  const data = await authService.signOut(req.headers as any);
 
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "User signed out successfully",
-        data,
-    });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User signed out successfully",
+    data,
+  });
 });
 
 const refresh = catchAsync(async (req: Request, res: Response) => {
-    const { refreshToken } = req.body as { refreshToken: string };
-    const data = await authService.refreshAccessToken(refreshToken);
+  const { refreshToken } = req.body as { refreshToken: string };
+  const data = await authService.refreshAccessToken(refreshToken);
 
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "Access token refreshed",
-        data,
-    });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Access token refreshed",
+    data,
+  });
 });
 
 export const authController = {
-    signUpEmail,
-    signInEmail,
-    signOut,
-    refresh,
+  signUpEmail,
+  signInEmail,
+  signOut,
+  refresh,
 };

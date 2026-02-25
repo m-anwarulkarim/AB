@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { OrderController } from "./order.controller";
-import authGuard from "../../lib/auth.guard";
-
+import authGuard from "../../lib/auth.guard.js";
+import { OrderController } from "./order.controller.js";
 const router = Router();
 
 router.post("/orders/checkout", authGuard(), OrderController.checkout);

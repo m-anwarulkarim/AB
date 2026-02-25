@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ComboController } from "./combo.controller";
+import { ComboController } from "./combo.controller.js";
 
 const router = Router();
 

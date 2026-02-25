@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import { prisma } from "./prisma";
-import { verifyAccessToken } from "../utils/jwt";
-import { USER_STATUS, UserRole } from "../../generated/prisma/enums";
+import { prisma } from "./prisma.js";
+import { verifyAccessToken } from "../utils/jwt.js";
+import { USER_STATUS, UserRole } from "../../generated/prisma/enums.js";
 
 const authGuard = (...allowedRoles: UserRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {

@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
-import logger from "../config/log";
-import { envVars } from "../config/env";
+import logger from "../config/log.js";
+import { envVars } from "../config/env.js";
 
 /**
  * Optional: AppError shape (যদি তুমি AppError ব্যবহার করো)

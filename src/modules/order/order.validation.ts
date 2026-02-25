@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { OrderStatus } from "../../../generated/prisma/enums";
+import { OrderStatus } from "../../../generated/prisma/enums.js";
 
 export const checkoutSchema = z.object({
-    addressId: z.string().min(1).optional(),
-    note: z.string().max(500).optional(),
+  addressId: z.string().min(1).optional(),
+  note: z.string().max(500).optional(),
 });
 
 export const updateOrderStatusSchema = z.object({
-    status: z.nativeEnum(OrderStatus),
+  status: z.nativeEnum(OrderStatus),
 });
