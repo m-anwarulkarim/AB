@@ -29,7 +29,14 @@ app.use(morgan("dev"));
 
 // 📦 Routes
 app.use("/api", router);
-
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "🚀 AB Backend API is running successfully!",
+    status: 200,
+    timestamp: new Date().toISOString()
+  });
+});
 // ❌ 404 handler
 app.use(notFound);
 
