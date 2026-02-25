@@ -20,12 +20,17 @@ export const AddressService = {
     },
 
     // ✅ POST /addresses
+    // ✅ POST /addresses
     async createAddress(userId: string, payload: CreateAddressInput) {
         const wantsDefault = payload.isDefault ?? false;
 
         const created = await prisma.$transaction(async (tx) => {
-            if (wantsDefault) {
-                // make others non-default
+            const existingCount = await tx.address.count({ where: { userId } });
+
+            // ✅ first address -> auto default
+            const makeDefault = existingCount === 0 ? true : wantsDefault;
+
+            if (makeDefault) {
                 await tx.address.updateMany({
                     where: { userId, isDefault: true },
                     data: { isDefault: false },
@@ -43,7 +48,7 @@ export const AddressService = {
                     ...(payload.district !== undefined ? { district: payload.district } : {}),
                     ...(payload.upazila !== undefined ? { upazila: payload.upazila } : {}),
                     ...(payload.area !== undefined ? { area: payload.area } : {}),
-                    ...(wantsDefault ? { isDefault: true } : {}),
+                    ...(makeDefault ? { isDefault: true } : {}),
                 },
             });
         });
@@ -120,16 +125,33 @@ export const AddressService = {
     async deleteAddress(userId: string, addressId: string) {
         const existing = await prisma.address.findFirst({
             where: { id: addressId, userId },
-            select: { id: true },
+            select: { id: true, isDefault: true },
         });
 
         if (!existing) {
             throw new AppError(status.NOT_FOUND, "Address not found");
         }
 
-        // Important: Order.addressId has onDelete SetNull, so safe
-        await prisma.address.delete({ where: { id: addressId } });
+        await prisma.$transaction(async (tx) => {
+            await tx.address.delete({ where: { id: addressId } });
+
+            // ✅ if deleted one was default, set another as default (if exists)
+            if (existing.isDefault) {
+                const next = await tx.address.findFirst({
+                    where: { userId },
+                    orderBy: { createdAt: "desc" },
+                    select: { id: true },
+                });
+
+                if (next) {
+                    await tx.address.update({
+                        where: { id: next.id },
+                        data: { isDefault: true },
+                    });
+                }
+            }
+        });
 
         return null;
-    },
+    }
 };

@@ -201,14 +201,19 @@ model Order {
   status        OrderStatus   @default(PENDING)
   paymentMethod PaymentMethod @default(CASH_ON_DELIVERY)
 
-  // snapshot customer info (order এর সময় যা ছিল তাই থাকবে)
+  // snapshot customer info 
   customerName    String
   customerPhone   String
   shippingAddress String
 
   subtotal       Int
   deliveryCharge Int @default(0)
-  total          Int
+
+  // ✅ NEW: discount per order (Option 1: 3rd+ => 15)
+  discount Int @default(0)
+
+  // ✅ Final payable amount: subtotal + deliveryCharge - discount
+  total Int
 
   note      String?
   createdAt DateTime @default(now())

@@ -10,7 +10,6 @@ function getUserId(reqUser: Express.Request["user"]): string {
 }
 
 function generateOrderNo(): string {
-    // Example: NT-20260224-735921 (simple unique-ish)
     const d = new Date();
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -19,13 +18,33 @@ function generateOrderNo(): string {
     return `NT-${yyyy}${mm}${dd}-${rand}`;
 }
 
+/**
+ * ✅ Cart-based rule
+ * totalQty = cart.items total quantity (qty sum)
+ */
+function calcCartRule(totalQty: number) {
+    let deliveryCharge = 0;
+    let discount = 0;
+
+    if (totalQty <= 0) return { deliveryCharge: 0, discount: 0 };
+
+    // 1 item => 50 delivery
+    if (totalQty === 1) deliveryCharge = 50;
+    // 2+ => free delivery
+    else deliveryCharge = 0;
+
+    // 3+ => 15 discount per extra item from 3rd
+    // 3 => 15, 4 => 30, 5 => 45 ...
+    if (totalQty >= 3) discount = (totalQty - 2) * 15;
+
+    return { deliveryCharge, discount };
+}
+
 export const OrderService = {
     getUserId,
 
     // ✅ POST /orders/checkout
     async checkout(userId: string, payload: CheckoutInput) {
-        const deliveryCharge = payload.deliveryCharge ?? 0;
-
         // 1) Load cart with items + combo
         const cart = await prisma.cart.findUnique({
             where: { userId },
@@ -41,7 +60,11 @@ export const OrderService = {
             throw new AppError(status.BAD_REQUEST, "Cart is empty");
         }
 
-        // 2) Address snapshot (optional but best)
+        // ✅ total quantity from cart
+        const totalQty = cart.items.reduce((sum, it) => sum + (it.quantity ?? 1), 0);
+        const { deliveryCharge, discount: productDiscount } = calcCartRule(totalQty);
+
+        // 2) Address snapshot
         let addressSnapshot: {
             addressId: string | null;
             customerName: string;
@@ -54,16 +77,9 @@ export const OrderService = {
                 where: { id: payload.addressId, userId },
             });
 
-            if (!addr) {
-                throw new AppError(status.NOT_FOUND, "Address not found");
-            }
+            if (!addr) throw new AppError(status.NOT_FOUND, "Address not found");
 
-            const fullAddress = [
-                addr.addressLine,
-                addr.area,
-                addr.upazila,
-                addr.district,
-            ]
+            const fullAddress = [addr.addressLine, addr.area, addr.upazila, addr.district]
                 .filter(Boolean)
                 .join(", ");
 
@@ -74,36 +90,32 @@ export const OrderService = {
                 shippingAddress: fullAddress || addr.addressLine,
             };
         } else {
-            // যদি addressId না দেয়, তাহলে default address try (optional behavior)
             const defaultAddr = await prisma.address.findFirst({
                 where: { userId, isDefault: true },
             });
 
-            if (defaultAddr) {
-                const fullAddress = [
-                    defaultAddr.addressLine,
-                    defaultAddr.area,
-                    defaultAddr.upazila,
-                    defaultAddr.district,
-                ]
-                    .filter(Boolean)
-                    .join(", ");
-
-                addressSnapshot = {
-                    addressId: defaultAddr.id,
-                    customerName: defaultAddr.fullName,
-                    customerPhone: defaultAddr.phone,
-                    shippingAddress: fullAddress || defaultAddr.addressLine,
-                };
-            } else {
-                // schema অনুযায়ী order এ customerName/customerPhone/shippingAddress required
+            if (!defaultAddr) {
                 throw new AppError(status.BAD_REQUEST, "Address is required (no default address found)");
             }
+
+            const fullAddress = [
+                defaultAddr.addressLine,
+                defaultAddr.area,
+                defaultAddr.upazila,
+                defaultAddr.district,
+            ]
+                .filter(Boolean)
+                .join(", ");
+
+            addressSnapshot = {
+                addressId: defaultAddr.id,
+                customerName: defaultAddr.fullName,
+                customerPhone: defaultAddr.phone,
+                shippingAddress: fullAddress || defaultAddr.addressLine,
+            };
         }
 
-        // 3) Build totals + validate combos
-        // Note: এখানে unitPrice হিসেবে cartItem.unitPrice (snapshot) ব্যবহার করছি
-        // তুমি চাইলে combo.price (current) নিতে পারো।
+        // 3) Build line items + validate
         const lineItems = cart.items.map((ci) => {
             const combo = ci.combo;
 
@@ -118,7 +130,7 @@ export const OrderService = {
                 );
             }
 
-            const unitPrice = ci.unitPrice; // snapshot from cart
+            const unitPrice = ci.unitPrice; // snapshot
             const lineTotal = unitPrice * ci.quantity;
 
             return {
@@ -131,11 +143,13 @@ export const OrderService = {
         });
 
         const subtotal = lineItems.reduce((sum, li) => sum + li.lineTotal, 0);
-        const total = subtotal + deliveryCharge;
+
+        // ✅ Apply delivery + discount
+        const grossTotal = subtotal + deliveryCharge;
+        const total = Math.max(0, grossTotal - productDiscount);
 
         // 4) Transaction: create order + items, decrement stock, clear cart
         const created = await prisma.$transaction(async (tx) => {
-            // orderNo uniqueness retry (simple)
             let orderNo = generateOrderNo();
             for (let i = 0; i < 3; i++) {
                 const exists = await tx.order.findUnique({ where: { orderNo }, select: { id: true } });
@@ -143,7 +157,6 @@ export const OrderService = {
                 orderNo = generateOrderNo();
             }
 
-            // create order
             const order = await tx.order.create({
                 data: {
                     orderNo,
@@ -158,9 +171,10 @@ export const OrderService = {
 
                     subtotal,
                     deliveryCharge,
+                    discount: productDiscount,
                     total,
 
-                    ...(payload.note ? { note: payload.note } : {}), // exactOptional safe
+                    ...(payload.note ? { note: payload.note } : {}),
                     items: {
                         create: lineItems.map((li) => ({
                             comboId: li.comboId,
@@ -174,21 +188,22 @@ export const OrderService = {
                 include: { items: true },
             });
 
-            // decrement stock for each combo
+            // ✅ Race-safe stock decrement
             for (const li of lineItems) {
-                // extra safety: conditional update (race condition safe-ish)
-                const updated = await tx.combo.update({
-                    where: { id: li.comboId },
+                const updated = await tx.combo.updateMany({
+                    where: {
+                        id: li.comboId,
+                        isActive: true,
+                        stock: { gte: li.quantity },
+                    },
                     data: { stock: { decrement: li.quantity } },
-                    select: { id: true },
                 });
 
-                if (!updated) {
-                    throw new AppError(status.INTERNAL_SERVER_ERROR, "Stock update failed");
+                if (updated.count !== 1) {
+                    throw new AppError(status.BAD_REQUEST, `Not enough stock for "${li.title}".`);
                 }
             }
 
-            // clear cart items
             await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
 
             return order;
@@ -240,5 +255,58 @@ export const OrderService = {
             data: { status: payload.status },
             include: { items: true },
         });
+    },
+
+    // ✅ POST /orders/preview (order create না করে শুধু হিসাব)
+    async previewCheckout(userId: string, payload: CheckoutInput) {
+        const cart = await prisma.cart.findUnique({
+            where: { userId },
+            include: {
+                items: {
+                    include: { combo: true },
+                    orderBy: { createdAt: "desc" },
+                },
+            },
+        });
+
+        if (!cart || cart.items.length === 0) {
+            throw new AppError(status.BAD_REQUEST, "Cart is empty");
+        }
+
+        // ✅ total quantity
+        const totalQty = cart.items.reduce((sum, it) => sum + (it.quantity ?? 1), 0);
+        const { deliveryCharge, discount } = calcCartRule(totalQty);
+
+        // validate + subtotal
+        const subtotal = cart.items.reduce((sum, ci) => {
+            const combo = ci.combo;
+
+            if (!combo || combo.isActive === false) {
+                throw new AppError(status.BAD_REQUEST, "One or more combos are unavailable");
+            }
+
+            if (combo.stock < ci.quantity) {
+                throw new AppError(
+                    status.BAD_REQUEST,
+                    `Not enough stock for "${combo.title}". Available: ${combo.stock}`
+                );
+            }
+
+            const unitPrice = ci.unitPrice;
+            return sum + unitPrice * ci.quantity;
+        }, 0);
+
+        const total = Math.max(0, subtotal + deliveryCharge - discount);
+
+        return {
+            subtotal,
+            deliveryCharge,
+            discount,
+            total,
+            rule: {
+                totalQty, // ✅ UI-friendly
+                discountSteps: totalQty >= 3 ? totalQty - 2 : 0,
+            },
+        };
     },
 };

@@ -80,4 +80,19 @@ export const OrderController = {
             data,
         });
     }),
+    // ✅ POST /orders/preview
+    // ✅ POST /orders/preview
+    preview: catchAsync(async (req: Request, res: Response) => {
+        const userId = OrderService.getUserId(req.user);
+        const payload = checkoutSchema.parse(req.body);
+
+        const data = await OrderService.previewCheckout(userId, payload as any);
+
+        sendResponse(res, {
+            statusCode: status.OK,
+            success: true,
+            message: "Checkout preview",
+            data,
+        });
+    }),
 };
