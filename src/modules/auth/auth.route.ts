@@ -6,6 +6,7 @@ import {
   signUpSchema,
   refreshSchema,
 } from "./auth.validation.js";
+import authGuard from "../../lib/auth.guard.js";
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.post(
 
 // JWT system এ sign-out শুধু client-side token delete.
 // তবুও endpoint রাখতে চাইলে protected রেখেছি
-router.post("/sign-out", authController.signOut);
+router.post("/sign-out", authGuard(), authController.signOut);
 
 // refresh endpoint
 router.post("/refresh", validateRequest(refreshSchema), authController.refresh);

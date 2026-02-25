@@ -2,7 +2,7 @@
   "name": "ab",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/server.js",
   "scripts": {
     "build": "prisma generate && tsup src/server.ts --format esm --platform node --target node20 --outDir dist --external pg-native",
     "start": "bun dist/server.js",
